@@ -99,7 +99,18 @@ kediaman_text = validateTwo(kediaman_list,kediaman)
 tipeKerja_text = validateTipeKerja(tipeKerja_list,tipeKerja)
 merokok_text = validateMerokok(merokok_list,merokok)
 
-
+input_data = {
+    "gender": [gender_text],
+    "age": [umur],
+    "hypertension": [hipertensi_text],
+    "heart_disease": [penyakit_jantung_text],
+    "ever_married": [menikah_text],
+    "work_type": [tipeKerja_text],
+    "Residence_type": [kediaman_text],
+    "avg_glucose_level": [glukosa],
+    "bmi": [bmi],
+    "smoking_status": [merokok_text]
+}
 # Membuat DataFrame dari data pengguna
 input_df = pd.DataFrame(input_data)
 
