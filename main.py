@@ -99,27 +99,42 @@ kediaman_text = validateTwo(kediaman_list,kediaman)
 tipeKerja_text = validateTipeKerja(tipeKerja_list,tipeKerja)
 merokok_text = validateMerokok(merokok_list,merokok)
 
-diagnosa = ''
 
+# Membuat DataFrame dari data pengguna
+input_df = pd.DataFrame(input_data)
+
+# Menampilkan bar chart dengan data yang telah digabung
+fig, ax = plt.subplots(figsize=(16, 10))
+
+# Kolom-kolom yang ingin ditampilkan dalam grouped bar chart
+columns_to_plot = ['gender', 'age', 'hypertension', 'heart_disease', 'ever_married', 'work_type', 'Residence_type', 'avg_glucose_level', 'bmi', 'smoking_status']
+
+# Membuat grouped bar chart dengan warna yang berbeda
+color_cycle = cycle(plt.rcParams['axes.prop_cycle'].by_key()['color'])
+for i, col in enumerate(columns_to_plot):
+    ax.bar(i, input_df[col].iloc[0], color=next(color_cycle), label=col)
+
+# Menambahkan label dan judul
+ax.set_ylabel('Values')
+ax.set_xlabel('Categories')
+ax.set_title('Grouped Bar Chart')
+ax.set_xticks(range(len(columns_to_plot)))
+ax.set_xticklabels(columns_to_plot)
+ax.legend()
+
+
+
+diagnosa = ''
 if st.button('Prediksi Penyakit Stroke'):
-    prediksi = model.predict([[
-        gender_text,
-        umur,
-        hipertensi_text,
-        penyakit_jantung_text,
-        menikah_text,
-        tipeKerja_text,
-        kediaman_text,
-        glukosa,
-        bmi,
-        merokok_text]])
+    prediksi = model.predict(input_df.tail(1)[['gender', 'age', 'hypertension', 'heart_disease', 'ever_married', 'work_type', 'Residence_type', 'avg_glucose_level', 'bmi', 'smoking_status']])
     if prediksi[0] == 1:
         diagnosa = "Pasien Diduga Kuat Terkena Stroke"
     else:
         diagnosa = "Pasien Diduga Kuat Tidak Terkena Stroke"
 
-
 st.success(diagnosa)
+st.pyplot(fig)
+
 
 
 
